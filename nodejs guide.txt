@@ -1,0 +1,160 @@
+node.js
+-> runtime environment, capabale of running js outside a browser
+
+Executing js with node:-
+	1. node REPL
+		READ|EVALUATE|PRINT|LOOP
+	2. execute js in terminal
+		node jsfilename
+
+MOdule:-
+	require('./add') -> importing the whole local module/file into the main
+	module.exports=add;-> added in exported file for particular function
+	const add =require('./add') -> added in imported file and called using the varible whenever required.
+
+Module scope:-
+	private scope towards function/module
+
+Module caching:-
+	the previous value is stored in variable, hence the values dont destroy.
+
+Import using require
+
+ES Module:-
+	file extention is .mjs 
+export:-
+	export default add; //single variable
+	export default{
+		name:variable name,
+		name:variable name
+	} //multiple export
+import:-
+	import * as math from './path' //imports everything
+	
+	import math from './path'
+
+	conosle.log(math.add(1,2))
+	conosle.log(math.sub(1,2))
+	//multiple import variable use
+
+	destructuring the function
+	import math from "./math-esm.mjs"
+
+	const{
+		add, subtract
+	}=math
+	console.log(add(2,9));
+	console.log(subtract(8,7));
+
+importing json data :-
+	const data =require('./data.json') //if extention not present node searches for data.js first so better to use extention
+	console.log(data.name);
+
+Built-in Module
+	-path
+	-events
+	-fs
+	-stream
+	-http
+
+Path Module ->
+	provides the absolute paths.
+
+	const path= require('node:path');
+	console.log(__filename);
+	console.log(__dirname)
+	console.log(path.basename(__filename));
+	console.log(path.basename(__dirname));
+
+	console.log(path.extname(__filename));
+	console.log(path.extname(__dirname));
+
+	console.log(path.parse(__filename));
+	console.log(path.format(path.parse(__filename)));
+
+	console.log(path.isAbsolute(__filename));
+	console.log(path.extname(__dirname));
+	console.log(path.join('/folder1','folder2','index.html'));
+	console.log(path.join('/folder1','//folder2','index.html'));
+	console.log(path.join('/folder1','//folder2','../index.html'));
+	console.log(path.join('/folder1','//folder2','../index.html'));
+	console.log(path.join(__dirname,'data.json'));
+
+
+	console.log(path.resolve('folder1','folder2','index.html'));
+	console.log(path.resolve('/folder1','/folder2','index.html'));
+	console.log(path.resolve('/folder1','//folder2','../index.html'));
+	console.log(path.resolve('/folder1','//folder2','../index.html'));
+	console.log(path.resolve(__dirname,'data.json'));
+
+Event module ->
+		function greet(name){
+		console.log(`Hello ${name}`);
+	}
+	function higherorderFunction(callBackFunction){
+		const name='Brozone';
+		callBackFunction(name)
+	}
+	higherorderFunction(greet);
+
+	const EventEmitter = require ("node:events")
+	const emitter= new EventEmitter()
+	emitter.on('Order-anything',(item,drink)=>{
+		console.log(`Order recieved, cooking ${item} and brewing ${drink} right away`);
+	})
+	console.log('Do work before event occurs in the system');
+	emitter.on('Order-anything',(size)=>{
+		if(size=='large'){
+			console.log('Serving complimentory drink');
+		}
+	})
+	emitter.emit("Order-anyting",'large')
+	emitter.emit("Order-anything",'pizza','pepsi')
+
+	const pizzaShop= require('./pizza-shop')
+	const DrinkMachine = require('./drink-machine')
+	const pizaShop=new pizzaShop();
+	const drinkMachine=new DrinkMachine()
+	pizaShop.on('order',(size,toping)=>{
+		console.log(`order recieved: Baking a ${size} pizza with ${toping}`);
+		drinkMachine.serveDrink(size)
+	});
+	pizaShop.order('large','corn')
+	pizaShop.displayOrderNumber()
+
+Fs Module ->
+	File system module allows to work to file systems
+	
+Streams ->
+	Sequence of data that is being moved from one poin to another over time.
+Buffers ->
+	create a wait on flow of data where in only required data is passed and rest is in await state or buffer state.
+
+Type of Streams ->
+	Readable Streams [to read] ->reading stream
+	Writable stream [to write] ->write stream
+	Duplex stream [read/write] ->Socket as duplex
+	Transform streams [modify/Transform data] -> File compression write/read data
+
+Pipes ->
+	connectes readable streams to a writable stream.
+	const gzip = zlib.createGzip()
+	readableStream.pipe(gzip).pipe(fs.WriteStream('./file2.txt.gz')) //zipping
+
+http ->
+	creating servers
+	const http = require('node:http');
+	const server = http.createServer((req,res)=>{
+	res.writeHead(200,{'Content-Type':"text/plain"});
+	res.end("Hello World")
+	});
+	server.listen(3000,()=>{
+	console.log("Sever running on port 3000");
+	})
+
+Thread pool ->
+	transfers control to the libuv when multiple thread is required.
+	libuv has4 threads by default
+
+	https.request onot bound on CPU cores
+	
