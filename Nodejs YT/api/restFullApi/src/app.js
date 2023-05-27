@@ -1,15 +1,14 @@
 const express = require("express");
+require("./db/conn");
+const studentRouter = require("./routers/student");
+
 const app = express();
-const port = process.nextTick.PORT || 3000;
+const port = process.env.PORT || 8000;
 
-app.get('/',(req,res)=>{})
+app.use(express.json());
+// register the router
+app.use(studentRouter);
 
-// create a new student 
-
-app.post('/students',(req,res)=>{
-    res.send("Hellofrom the otherside");
-})
-
-app.listen(port,()=>{
-    console.log(`Connection is set at ${port}`);
-})
+app.listen(port, () => {
+  console.log(`Connection is set at ${port}`);
+});
